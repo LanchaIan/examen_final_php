@@ -139,7 +139,7 @@ function mover(){
     if ($existente == false) {
         insertar();
         restar();
-        echo "<h2> a insertar </h2>";
+
     }
     echo "<h2>Vuelva al listado para actualizar la información</h2>";
 
@@ -184,7 +184,6 @@ function sumar(){
     global $tienda_elegida;
     global $unidades_movidas;
     global $id;
-    echo $id;
     $result = $conProyecto->query(
     "SELECT stocks.producto, 
         stocks.tienda,
@@ -208,8 +207,6 @@ function sumar(){
         AND producto = $producto");
         $sumar->bindParam(':unidades',$unidades_finales);
         $sumar->execute();
-   
-    echo "<p>relizado</p>";
 }
 
 function restar(){
@@ -242,9 +239,6 @@ function restar(){
         AND producto = $producto");
         $restar->bindParam(':unidades',$unidades_finales);
         $restar->execute();
-    
-   
-    echo "<p>relizado 2</p>";
 }
 
 if (isset($_POST['tienda_elegida'])){
@@ -306,8 +300,31 @@ function poner_nombre(){
     }    
 }
 
+if (isset($_POST["borrar"])){
+    echo "<h2>Borrada con éxito?</h2>"; 
+    borrar();  
+}
+function borrar(){
+    echo "<h2>pillado</h2>";  
+    if (isset($_SESSION["Nombre"])){
+        echo "<h2>Borrando</h2>";  
+        session_destroy();
+        echo "<h2>Borrada con éxito</h2>";  
+    }
+    if (!isset($_SESSION["Nombre"])){
+        echo "No puedes borrar sesión si no la has iniciado";
+    }
+}
+
+if(isset($_POST["Mover"])){
+    mover();
+}
+
 ?>
 
 <html>
-    <button onclick="mover()"> Borrar sesión </button>
+    <button onclick="borrar()"> Borrar sesión </button>
+    <form action="listado.php" method="post">
+        <input type='submit' name='boton' value='Volver'/>
+    </form>
 <html>
